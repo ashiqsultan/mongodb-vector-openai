@@ -1,4 +1,3 @@
-import ProductCollection from './models/products';
 import { MongoClient } from 'mongodb';
 
 const vectorIndex = {
@@ -19,12 +18,9 @@ const vectorIndex = {
 
 const indexProductCollection = async (dbClient: MongoClient) => {
   try {
-    await dbClient.db().createCollection('products');
-    const productCollection = await ProductCollection();
-    const createVectorIndex = await productCollection.createSearchIndex(
-      vectorIndex
-    );
-    console.log(createVectorIndex);
+    const productCollection = await dbClient.db().createCollection('products');
+    // Only available when used against a 7.0+ Atlas cluster.
+    await productCollection.createSearchIndex(vectorIndex);
     console.log('Index created for ProductCollection');
   } catch (error) {
     console.log('Error creating index for ProductCollection');
