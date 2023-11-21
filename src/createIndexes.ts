@@ -1,7 +1,8 @@
 import { MongoClient } from 'mongodb';
+import { VECTOR_INDEX_NAME, PRODUCT_COLLECTION_NAME } from './constants';
 
 const vectorIndex = {
-  name: 'mynewvectorindex',
+  name: VECTOR_INDEX_NAME,
   definition: {
     mappings: {
       dynamic: true,
@@ -18,7 +19,9 @@ const vectorIndex = {
 
 const indexProductCollection = async (dbClient: MongoClient) => {
   try {
-    const productCollection = await dbClient.db().createCollection('products');
+    const productCollection = await dbClient
+      .db()
+      .createCollection(PRODUCT_COLLECTION_NAME);
     // Only available when used against a 7.0+ Atlas cluster.
     await productCollection.createSearchIndex(vectorIndex);
     console.log('Index created for ProductCollection');

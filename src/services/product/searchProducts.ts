@@ -1,5 +1,6 @@
 import ProductCollection, { IProductDocument } from '../../models/products';
 import generateEmbedding from '../../utils/openai/generateEmbedding';
+import { VECTOR_INDEX_NAME } from '../../constants';
 
 const searchProducts = async (
   searchText: string
@@ -12,7 +13,7 @@ const searchProducts = async (
     const aggCursor = collection.aggregate<IProductDocument>([
       {
         $vectorSearch: {
-          index: 'mynewvectorindex',
+          index: VECTOR_INDEX_NAME,
           path: 'embedding',
           queryVector: embedding,
           numCandidates: 150,
