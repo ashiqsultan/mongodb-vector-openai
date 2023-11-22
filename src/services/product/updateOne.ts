@@ -3,6 +3,7 @@ import ProductCollection, {
   IProductDocument,
   IProducts,
 } from '../../models/products';
+import generateEmbedding from '../../utils/openai/generateEmbedding';
 
 export default async function updateOne(
   id: string,
@@ -19,6 +20,14 @@ export default async function updateOne(
     if (description) updateObj.description = description;
     if (price) updateObj.price = price;
 
+    const product = await collection.findOne({ _id });
+    const objToEmbed = {
+      name: updateObj.name || product.name,
+      category: updateObj.category || product.category,
+      description: updateObj.description || product.description,
+    };
+    const embedding = await generateEmbedding(JSON.stringify(objToEmbed));
+    updateObj.embedding = embedding;
     const updatedDoc = await collection.findOneAndUpdate(
       { _id },
       { $set: updateObj },

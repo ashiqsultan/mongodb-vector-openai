@@ -19,7 +19,6 @@ const updateProduct = async (
       res.status(400).send(response);
       return;
     }
-    console.log({ reqBody });
     const product = await updateOne(productId, reqBody);
     const result: AppResponse = {
       data: product,
