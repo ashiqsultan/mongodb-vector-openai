@@ -9,7 +9,8 @@
     "dev": "ts-node-dev --respawn src/server.ts",
     "build": "tsc",
     "start": "node dist/server.js",
-    "watch-ts": "tsc -w"
+    "watch-ts": "tsc -w",
+    "seed": "ts-node src/seed/main.ts"
   },
   "devDependencies": {
     "@types/cors": "^2.8.16",

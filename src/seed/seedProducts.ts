@@ -22,8 +22,4 @@ const seedProducts = async () => {
   }
 };
 
-const seed = async () => {
-  await seedProducts();
-};
-
-export default seed;
+export default seedProducts;
