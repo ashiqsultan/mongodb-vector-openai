@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { pong } from '../controller/ping';
-import { getProducts } from '../controller/product';
+import getProducts from '../controller/products/getProducts';
+import updateProduct from '../controller/products/updateProduct';
 
 let routes = Router();
 
@@ -9,5 +10,6 @@ routes.get('/ping', pong);
 
 // Products
 routes.get('/product', getProducts);
+routes.patch('/product/:id', updateProduct);
 
 export default routes;

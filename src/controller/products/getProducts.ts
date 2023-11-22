@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
-import AppResponse from '../types/AppResponse';
-import searchProducts from '../services/product/searchProducts';
+import AppResponse from '../../types/AppResponse';
+import searchProducts from '../../services/product/searchProducts';
 
 const getProducts = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -25,4 +25,4 @@ const getProducts = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-export { getProducts };
+export default getProducts;
