@@ -8,6 +8,8 @@ const searchProducts = async (
   try {
     // Generate Embedding
     const embedding = await generateEmbedding(searchText);
+    // TODO
+    // Add OpenAI GPT Helper
     const collection = await ProductCollection();
     // Query DB
     const aggCursor = collection.aggregate<IProductDocument>([
