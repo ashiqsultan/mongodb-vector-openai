@@ -1,13 +1,13 @@
 import { ObjectId, Collection, Document } from 'mongodb';
 import dbClient from '../dbClient';
-import {PRODUCT_COLLECTION_NAME} from '../constants';
+import { PRODUCT_COLLECTION_NAME } from '../constants';
 
 export interface IProducts {
   name: string;
   category: string;
   description: string;
   price: number;
-  embedding: number[];
+  embedding?: number[];
 }
 
 export interface IProductDocument extends IProducts, Document {

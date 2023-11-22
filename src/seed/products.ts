@@ -1,4 +1,32 @@
 const products = [
+  {
+    name: 'JavaScript: The Good Parts',
+    category: 'Books',
+    description:
+      'Authored by Douglas Crockford, this book focuses on the good parts of JavaScript, offering insights into best practices and effective usage.',
+    price: 32,
+  },
+  {
+    name: 'Clean Code: A Handbook of Agile Software Craftsmanship',
+    category: 'Books',
+    description:
+      'Authored by Robert C. Martin (Uncle Bob), this book is a guide to writing clean, maintainable, and efficient code. It covers principles and practices of writing clean code.',
+    price: 45,
+  },
+  {
+    name: 'The Design of Everyday Things',
+    category: 'Books',
+    description:
+      'Authored by Don Norman, this book delves into the principles of design and usability, exploring how design impacts everyday experiences and products.',
+    price: 28,
+  },
+  {
+    name: 'Cracking the Coding Interview',
+    category: 'Books',
+    description:
+      'Authored by Gayle Laakmann McDowell, this book is a comprehensive guide to preparing for coding interviews, offering practice questions and solutions.',
+    price: 38,
+  },
   // Electronics
   {
     name: 'Smartphone X',
@@ -100,4 +128,4 @@ const products = [
   },
 ];
 
-export default products;
+export default products.slice(0, 4);
