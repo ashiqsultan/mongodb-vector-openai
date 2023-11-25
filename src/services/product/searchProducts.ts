@@ -3,18 +3,46 @@ import generateEmbedding from '../../utils/openai/generateEmbedding';
 import { VECTOR_INDEX_NAME } from '../../constants';
 import searchAssistant from '../../utils/openai/searchAssistant';
 
+interface IGptResponse {
+  category?: string;
+  minPrice?: number;
+  maxPrice?: number;
+}
+
+/**
+ * Constructs the Match Stage required for Aggregate pipeline based on GPT response
+ */
+const constructMatch = (gptRes: IGptResponse): Record<string, any> => {
+  const matchStage: Record<string, any> = { $match: {} };
+  const gptCategory = gptRes.category;
+  const gptMinPrice = gptRes.minPrice;
+  const gptMaxPrice = gptRes.maxPrice;
+  if (gptCategory) {
+    matchStage.$match = { category: gptCategory };
+  }
+  if (typeof gptMinPrice === 'number' || typeof gptMaxPrice === 'number') {
+    const priceMatch: Record<string, any> = {};
+    if (typeof gptMinPrice === 'number') {
+      priceMatch.$gte = gptMinPrice;
+    }
+    if (typeof gptMaxPrice === 'number') {
+      priceMatch.$lte = gptMaxPrice;
+    }
+    matchStage.$match.price = priceMatch;
+  }
+  return matchStage;
+};
+
 const searchProducts = async (
   searchText: string
 ): Promise<IProductDocument[]> => {
   try {
-    // Generate Embedding
-    const embedding = await generateEmbedding(searchText);
-    const gptResponse = await searchAssistant(searchText);
-    console.log('gptResponse');
-    console.log(gptResponse);
+    const embedding = await generateEmbedding(searchText); // Generate Embedding
+    const gptResponse = (await searchAssistant(searchText)) as IGptResponse;
+    console.log('gptResponse', gptResponse);
+    const matchStage = constructMatch(gptResponse);
+    console.log('matchStage', matchStage);
     const collection = await ProductCollection();
-    // TODO
-    // Add Match Stage based on gptResponse
     // Query DB
     const aggCursor = collection.aggregate<IProductDocument>([
       {
@@ -23,10 +51,10 @@ const searchProducts = async (
           path: 'embedding',
           queryVector: embedding,
           numCandidates: 150,
-          limit: 2,
+          limit: 10,
         },
       },
-      // { $match: { category: 'Electronics', price: { $lte: 200 } } },
+      matchStage,
       {
         $project: {
           _id: 1,
@@ -39,7 +67,6 @@ const searchProducts = async (
       },
     ]);
     const products: IProductDocument[] = [];
-    // Print the aggregated results
     for await (const doc of aggCursor) {
       products.push(doc);
     }
