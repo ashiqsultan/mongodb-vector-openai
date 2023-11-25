@@ -1,6 +1,7 @@
 import ProductCollection, { IProductDocument } from '../../models/products';
 import generateEmbedding from '../../utils/openai/generateEmbedding';
 import { VECTOR_INDEX_NAME } from '../../constants';
+import searchAssistant from '../../utils/openai/searchAssistant';
 
 const searchProducts = async (
   searchText: string
@@ -8,9 +9,12 @@ const searchProducts = async (
   try {
     // Generate Embedding
     const embedding = await generateEmbedding(searchText);
-    // TODO
-    // Add OpenAI GPT Helper
+    const gptResponse = await searchAssistant(searchText);
+    console.log('gptResponse');
+    console.log(gptResponse);
     const collection = await ProductCollection();
+    // TODO
+    // Add Match Stage based on gptResponse
     // Query DB
     const aggCursor = collection.aggregate<IProductDocument>([
       {
