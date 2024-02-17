@@ -33,7 +33,6 @@ export default async function updateOne(
       { $set: updateObj },
       {
         returnDocument: 'after',
-        projection: { embedding: 0 },
       }
     );
     if (!updatedDoc) {
